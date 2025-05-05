@@ -10,6 +10,7 @@ import { Step2Age } from '../assets/components/FormSteps/Step2Age';
 import { Step3Remedies } from '../assets/components/FormSteps/Step3Remedies';
 import { Step4Routine } from '../assets/components/FormSteps/Step4Routine';
 import { ProgressIndicator } from '../assets/components/common/Checkbox';
+import { Leaf } from 'lucide-react';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -173,11 +174,14 @@ const Onboarding = () => {
     <div className="min-h-screen bg-blue-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 max-w-xl mx-auto">
         <div className="mb-8">
-          <img 
-            src="/assets/logo.svg" 
-            alt="Eight Health Logo" 
-            className="h-12 w-12 mx-auto mb-4"
-          />
+        <Leaf
+           
+           className="h-10 w-10 mx-auto mb-6 text-blue-600"
+         />
+         
+         <h1 className="text-xl text-center font-bold mx-auto text-gray-900 sm:text-5xl md:text-4xl mb-4">
+           Eight<span className="text-blue-600">Health</span>
+         </h1>
           <h2 className="mt-2 text-center text-2xl font-bold text-gray-900">
             Vamos configurar seu perfil
           </h2>
