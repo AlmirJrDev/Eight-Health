@@ -54,14 +54,14 @@ export const WaterProgress: React.FC<WaterProgressProps> = ({ currentAmount, dai
         </div>
       </div>
       
-      <div className="w-full bg-gray-200 rounded-full h-2.5 mt-6">
+      {/* <div className="w-full bg-gray-200 rounded-full h-2.5 mt-6">
         <motion.div 
           className="bg-primary h-2.5 rounded-full"
           initial={{ width: "0%" }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         />
-      </div>
+      </div> */}
       
       <p className="mt-2 text-sm text-text-secondary">
         {progress}% do objetivo diário

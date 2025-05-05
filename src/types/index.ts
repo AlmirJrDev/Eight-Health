@@ -1,37 +1,34 @@
-
 export type NaturalRemedy = 
-  | 'water' 
-  | 'exercise' 
-  | 'rest' 
-  | 'sunlight' 
-  | 'temperance' 
-  | 'air' 
-  | 'nutrition' 
-  | 'trust';
-
-
-  export interface UserData {
-    name: string;
-    age: string;
-    height: number; // em cm
-    weight: number; // em kg
-    selectedRemedies: string[];
-    remedies: any[];
-    waterGoal: number;
-    wakeUpTime: string;
-    sleepTime: string;
-    routines: any[];
-    onboardingCompleted: boolean;
-  }
-
+| 'water' 
+| 'exercise' 
+| 'rest' 
+| 'sunlight' 
+| 'temperance' 
+| 'air' 
+| 'nutrition' 
+| 'trust';
 
 export interface RoutineActivity {
   id: string;
-  time: string; 
   name: string;
-  remedyType: NaturalRemedy;
-  completed: boolean;
-  description?: string;
+  startTime: string;
+  endTime: string;
+  category: NaturalRemedy | 'medication' | 'meal' | 'other';
+  days?: string[]; // Optional array of days when this activity should occur
+}
+
+export interface UserData {
+  name: string;
+  age: string;
+  height: number; // em cm
+  weight: number; // em kg
+  selectedRemedies: string[];
+  remedies: any[];
+  waterGoal: number;
+  wakeUpTime: string;
+  sleepTime: string;
+  routines: RoutineActivity[];
+  onboardingCompleted: boolean;
 }
 
 export interface WaterData {
@@ -43,7 +40,6 @@ export interface WaterData {
   }[];
 }
 
-
 export interface HabitData {
   date: string; 
   completedRemedies: {
@@ -51,7 +47,6 @@ export interface HabitData {
   };
   completionLevel: number; 
 }
-
 
 export interface UserStore {
   userData: UserData | null;
@@ -66,6 +61,14 @@ export interface WaterStore {
   waterData: WaterData;
   addWater: (amount: number) => void;
   setDailyGoal: (goal: number) => void;
+  reset: () => void;
+}
+
+export interface RoutineStore {
+  routines: RoutineActivity[];
+  addRoutine: (routine: Omit<RoutineActivity, "id">) => void;
+  updateRoutine: (id: string, routine: Omit<RoutineActivity, "id">) => void;
+  removeRoutine: (id: string) => void;
   reset: () => void;
 }
 

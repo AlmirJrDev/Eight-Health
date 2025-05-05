@@ -4,8 +4,9 @@ import Welcome from '../pages/Welcome';
 import Onboarding from '../pages/Onboarding';
 import Dashboard from '../pages/Dashboard';
 import WaterPage from '../pages/WaterPage';
-import HabitsPage from '../pages/HabitsPage';
+
 import { ROUTES } from '../utils/constants';
+import RoutinesPage from '../pages/RoutinePage';
 
 const Routes = () => {
   const { userData, isOnboardingComplete } = useUserStore();
@@ -45,7 +46,7 @@ const Routes = () => {
     },
     {
       path: ROUTES.HABITS,
-      element: <ProtectedRoute><HabitsPage /></ProtectedRoute>,
+      element: <ProtectedRoute><RoutinesPage /></ProtectedRoute>,
     },
     {
     

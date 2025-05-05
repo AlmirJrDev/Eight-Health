@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
+import { Leaf } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +12,8 @@ const Header = () => {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Água', path: '/water' },
     { name: 'Hábitos', path: '/habits' },
+    { name: 'Rotina', path: '/rotine' },
+    
   ];
 
   const toggleMenu = () => {
@@ -29,12 +32,12 @@ const Header = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/dashboard" className="flex items-center">
-                <img
-                  className="h-8 w-auto"
-                  src="/assets/logo.svg"
-                  alt="Eight Health Logo"
+                <Leaf
+                  className="h-8 w-auto  text-blue-600"
+                 
                 />
-                <span className="ml-2 text-lg font-semibold text-blue-600">Eight Health</span>
+                       <span className="ml-2 text-lg font-semibold ">Eight</span>
+                <span className="text-lg font-semibold text-blue-600">Health</span>
               </Link>
             </div>
           </div>

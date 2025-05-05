@@ -1,111 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 import useWaterStore from '../store/waterStore';
 import useHabitStore from '../store/habitStore';
+
 import { Button } from '../assets/components/common/Button';
 import { WaterProgress } from '../assets/components/WaterTracker/WaterProgress';
 import { NextActivity } from '../assets/components/RoutineClock/NextActivicy';
-
-
-interface Activity {
-  id: string;
-  name: string;
-  startTime: string;
-  endTime: string;
-  category: 'medication' | 'exercise' | 'water' | 'meal' | 'rest' | 'other';
-  completed?: boolean;
-}
+import useRoutineStore from '../store/routineStore';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { userData } = useUserStore();
   const { waterData, addWater } = useWaterStore();
-  const { habits, getDisplayHabits, toggleHabitCompletion } = useHabitStore();
-  const [todayActivities, setTodayActivities] = useState<Activity[]>([]);
+  const { getDisplayHabits, toggleHabitCompletion, habits } = useHabitStore();
+  const {  markRoutineCompleted, getDailyRoutines } = useRoutineStore();
   const displayHabits = getDisplayHabits();
+  
   useEffect(() => {
     if (!userData || !userData.name) {
       navigate('/welcome');
     }
   }, [userData, navigate]);
-  useEffect(() => {
-    if (userData) {
-    
-      const sampleActivities: Activity[] = [
-        {
-          id: '1',
-          name: 'Beber água',
-          startTime: '08:00',
-          endTime: '08:05',
-          category: 'water',
-        },
-        {
-          id: '2',
-          name: 'Exercício matinal',
-          startTime: '08:30',
-          endTime: '09:00',
-          category: 'exercise',
-        },
-        {
-          id: '3',
-          name: 'Almoço',
-          startTime: '12:00',
-          endTime: '12:45',
-          category: 'meal',
-        },
-        {
-          id: '4',
-          name: 'Beber água',
-          startTime: '14:00',
-          endTime: '14:05',
-          category: 'water',
-        },
-        {
-          id: '5',
-          name: 'Vitamina D',
-          startTime: '16:00',
-          endTime: '16:05',
-          category: 'medication',
-        },
-        {
-          id: '6',
-          name: 'Alongamento',
-          startTime: '18:00',
-          endTime: '18:15',
-          category: 'exercise',
-        }
-      ];
-      
-      if (userData.selectedRemedies && userData.selectedRemedies.length > 0) {
-        userData.selectedRemedies.forEach((remedy, index) => {
-          const remedyName = typeof remedy === 'string' ? remedy : (remedy as any).name;
-          const remedyTime = typeof remedy === 'string' ? '08:00' : (remedy as any).time || '08:00';
-          
-          sampleActivities.push({
-            id: `med-${index}`,
-            name: remedyName,
-            startTime: remedyTime,
-            endTime: remedyTime.split(':').map((part: string, i: number) => 
-              i === 1 ? String(Number(part) + 5).padStart(2, '0') : part
-            ).join(':'),
-            category: 'medication'
-          });
-        });
-      }
-      
-      setTodayActivities(sampleActivities);
-    }
-  }, [userData]);
 
   const handleActivityCompletion = (activityId: string) => {
-    setTodayActivities(activities => 
-      activities.map(activity => 
-        activity.id === activityId ? { ...activity, completed: true } : activity
-      )
-    );
+    markRoutineCompleted(activityId, true);
   
-    const activity = todayActivities.find(a => a.id === activityId);
+    const activity = getDailyRoutines().find(a => a.id === activityId);
     if (activity && activity.category === 'water') {
       addWater(250); 
     }
@@ -139,7 +60,7 @@ const Dashboard = () => {
               <Button 
                 variant="text" 
                 onClick={() => navigate('/water')}
-                className="text-blue-600"
+                className="text-blue-600 h-12"
               >
                 Ver Detalhes
               </Button>
@@ -151,7 +72,7 @@ const Dashboard = () => {
             <div className="mt-4 flex justify-center">
               <Button 
                 onClick={() => addWater(250)}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-blue-500 h-12 px-8 rounded-md hover:bg-blue-600 text-white"
               >
                 Adicionar 250ml
               </Button>
@@ -213,12 +134,12 @@ const Dashboard = () => {
         <div className="space-y-6">
           {/* Next Activity Card */}
           <NextActivity 
-            activities={todayActivities}
+            activities={getDailyRoutines()}
             onMarkComplete={handleActivityCompletion}
           />
 
           {/* Quick Actions Card */}
-          <div className="bg-white shadow-sm rounded-lg p-4">
+          {/* <div className="bg-white shadow-sm rounded-lg p-4">
             <h3 className="text-lg font-medium text-gray-900 mb-3">Ações Rápidas</h3>
             <div className="space-y-2">
               <Button 
@@ -234,6 +155,16 @@ const Dashboard = () => {
               <Button 
                 variant="outline" 
                 className="w-full text-left justify-start"
+                onClick={() => navigate('/routines')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Gerenciar rotina
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full text-left justify-start"
                 onClick={() => navigate('/habits')}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -242,7 +173,7 @@ const Dashboard = () => {
                 Gerenciar hábitos
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

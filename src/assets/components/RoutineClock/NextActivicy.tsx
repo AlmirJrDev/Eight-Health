@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../common/Button';
+import { NaturalRemedy } from '../../../types';
 
 interface Activity {
   id: string;
   name: string;
   startTime: string;
   endTime: string;
-  category: 'medication' | 'exercise' | 'water' | 'meal' | 'rest' | 'other';
+  category: NaturalRemedy | 'medication' | 'exercise' | 'water' | 'meal' | 'rest' | 'other';
   completed?: boolean;
 }
 
@@ -127,13 +128,13 @@ export const NextActivity: React.FC<NextActivityProps> = ({ activities, onMarkCo
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-sm text-blue-800">Em {timeUntilNext}</span>
+          <span className="text-sm text-blue-600">Em {timeUntilNext}</span>
         </div>
       </div>
       
       <Button 
         onClick={() => onMarkComplete(nextActivity.id)}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+        className="w-full bg-blue-500 h-12 px-8 rounded-md hover:bg-blue-600 text-white"
       >
         Marcar como Concluída
       </Button>

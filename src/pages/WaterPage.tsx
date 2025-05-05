@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import useWaterStore from '../store/waterStore';
+
 import { WaterProgress } from '../assets/components/WaterTracker/WaterProgress';
-import Header from '../assets/components/layout/Header';
+
 import { WaterInput } from '../assets/components/WaterTracker/WaterInput';
 import Footer from '../assets/components/layout/Footer';
+import useWaterStore from '../store/waterStore';
 
 
 const WaterPage = () => {
@@ -16,7 +17,7 @@ const WaterPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">
-      <Header />
+    
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <motion.div 
@@ -25,7 +26,7 @@ const WaterPage = () => {
           transition={{ duration: 0.5 }}
           className="bg-white rounded-xl shadow-lg p-6 mb-8"
         >
-          <h1 className="text-3xl font-bold text-blue-800 mb-6">Water Tracker</h1>
+          <h1 className="text-3xl font-bold text-blue-600 mb-6">Water Tracker</h1>
           
           <div className="mb-8">
             <WaterProgress 

@@ -1,117 +1,271 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { HabitData, NaturalRemedy } from '../../../types';
-import { getCompletionLevelColor, getRemedyIcon, getRemedyName } from '../../../utils/helpers';
+import { NaturalRemedy } from '../../../types';
 
-interface HabitVisualizationProps {
-  habits: HabitData[];
-  selectedRemedies: NaturalRemedy[];
+// Typed remedy info
+interface RemedyInfo {
+  name: string;
+  icon: string;
+  color: string;
 }
 
-export const HabitVisualization: React.FC<HabitVisualizationProps> = ({ 
-  habits, 
-  selectedRemedies 
-}) => {
+// Properly typed remedy information object
+const REMEDY_INFO: Record<NaturalRemedy, RemedyInfo> = {
+  water: { name: 'Água', icon: '💧', color: 'bg-blue-500' },
+  exercise: { name: 'Exercício', icon: '🏃', color: 'bg-orange-500' },
+  rest: { name: 'Descanso', icon: '😴', color: 'bg-purple-500' },
+  sunlight: { name: 'Sol', icon: '☀️', color: 'bg-yellow-500' },
+  temperance: { name: 'Temperança', icon: '⚖️', color: 'bg-teal-500' },
+  air: { name: 'Ar Puro', icon: '🌬️', color: 'bg-cyan-500' },
+  nutrition: { name: 'Nutrição', icon: '🥗', color: 'bg-green-500' },
+  trust: { name: 'Confiança', icon: '🙏', color: 'bg-indigo-500' }
+};
 
-  const getDaysArray = () => {
-    const days = [];
-    const today = dayjs();
+interface HabitCalendarProps {
+  habitsData: {
+    id: string;
+    remedy: NaturalRemedy;
+    name: string;
+    dates: string[];
+  }[];
+  activeRemedies: NaturalRemedy[];
+}
+
+interface DayInfo {
+  date: string;
+  dayOfWeek: string;
+  dayOfMonth: number;
+}
+
+interface CompletionData {
+  remedyCompletions: Record<NaturalRemedy, boolean>;
+  completedCount: number;
+  totalRemedies: number;
+  completionLevel: number;
+}
+
+export const HabitCalendar: React.FC<HabitCalendarProps> = ({ 
+  habitsData, 
+  activeRemedies 
+}) => {
+  const [selectedMonth, setSelectedMonth] = useState(dayjs().format('YYYY-MM'));
+
+  // Create array of days for the selected month
+  const getDaysInMonth = (): DayInfo[] => {
+    const year = parseInt(selectedMonth.split('-')[0]);
+    const month = parseInt(selectedMonth.split('-')[1]) - 1;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     
-    for (let i = 29; i >= 0; i--) {
-      const date = today.subtract(i, 'day');
+    const days = [];
+    for (let i = 1; i <= daysInMonth; i++) {
+      const day = dayjs(`${selectedMonth}-${i.toString().padStart(2, '0')}`);
       days.push({
-        date: date.format('YYYY-MM-DD'),
-        dayOfWeek: date.format('ddd'),
-        dayOfMonth: date.format('D'),
+        date: day.format('YYYY-MM-DD'),
+        dayOfWeek: day.format('ddd'),
+        dayOfMonth: i,
       });
     }
     
     return days;
   };
   
-  const days = getDaysArray();
+  const days = getDaysInMonth();
   
-  const getHabitForDate = (date: string): HabitData | undefined => {
-    return habits.find(habit => habit.date === date);
+  // Get previous months for navigation
+  const getMonthOptions = () => {
+    const options = [];
+    const today = dayjs();
+    
+    for (let i = 0; i < 12; i++) {
+      const date = today.subtract(i, 'month');
+      options.push({
+        value: date.format('YYYY-MM'),
+        label: date.format('MMMM YYYY')
+      });
+    }
+    
+    return options;
   };
   
+  // Calculate stats for the current month
   const calculateStats = () => {
-    let totalDays = 0;
-    let completedDays = 0;
+    const year = parseInt(selectedMonth.split('-')[0]);
+    const month = parseInt(selectedMonth.split('-')[1]) - 1;
+    const startOfMonth = new Date(year, month, 1);
+    const endOfMonth = new Date(year, month + 1, 0);
     
-    habits.forEach(habit => {
-      const date = dayjs(habit.date);
-      const isWithinLast30Days = dayjs().diff(date, 'day') <= 30;
-      
-      if (isWithinLast30Days) {
-        totalDays++;
-        if (habit.completionLevel > 0) {
-          completedDays++;
+    let completedDays = 0;
+    const totalDays = days.length;
+    const daysTracked = new Set<string>();
+    
+    habitsData.forEach(habit => {
+      habit.dates.forEach(date => {
+        const habitDate = new Date(date);
+        if (habitDate >= startOfMonth && habitDate <= endOfMonth) {
+          daysTracked.add(date);
         }
-      }
+      });
     });
     
+    completedDays = daysTracked.size;
     const percentage = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
+    
+    // Calculate streak
+    let currentStreak = 0;
+    const today = dayjs().format('YYYY-MM-DD');
+    const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+    
+    // Check if today has completions
+    const hasTodayCompletions = daysTracked.has(today);
+    
+    // Start from yesterday or today depending on today's completion
+    let currentDate = hasTodayCompletions ? today : yesterday;
+    let checkDate = dayjs(currentDate);
+    
+    // Count back until we find a day without completions
+    while (daysTracked.has(checkDate.format('YYYY-MM-DD'))) {
+      currentStreak++;
+      checkDate = checkDate.subtract(1, 'day');
+    }
+    
+    // If today doesn't have completions, don't count it in streak
+    if (!hasTodayCompletions) {
+      currentStreak = Math.max(0, currentStreak);
+    }
     
     return {
       totalDays,
       completedDays,
-      percentage
+      percentage,
+      currentStreak
     };
   };
   
   const stats = calculateStats();
+
+  // Calculate completion levels for each day
+  const getCompletionData = (date: string): CompletionData => {
+    const remedyCompletions = {} as Record<NaturalRemedy, boolean>;
+    
+    // Initialize all active remedies as incomplete
+    activeRemedies.forEach(remedy => {
+      remedyCompletions[remedy] = false;
+    });
+    
+    // Mark completed remedies
+    habitsData.forEach(habit => {
+      if (habit.dates.includes(date)) {
+        remedyCompletions[habit.remedy] = true;
+      }
+    });
+    
+    // Count completed remedies
+    const completedCount = Object.values(remedyCompletions).filter(Boolean).length;
+    const totalRemedies = activeRemedies.length;
+    
+    // Calculate completion level (0-4)
+    let completionLevel = 0;
+    if (totalRemedies > 0) {
+      const completionPercentage = completedCount / totalRemedies;
+      if (completionPercentage > 0) {
+        completionLevel = Math.ceil(completionPercentage * 4);
+      }
+    }
+    
+    return {
+      remedyCompletions,
+      completedCount,
+      totalRemedies,
+      completionLevel
+    };
+  };
+  
+  // Get color based on completion level
+  const getCompletionLevelColor = (level: number): string => {
+    switch (level) {
+      case 0: return 'bg-gray-100';
+      case 1: return 'bg-blue-100';
+      case 2: return 'bg-blue-300';
+      case 3: return 'bg-blue-500';
+      case 4: return 'bg-blue-700';
+      default: return 'bg-gray-100';
+    }
+  };
+  
+  // Handle month change
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(e.target.value);
+  };
   
   return (
     <div className="space-y-6">
-      <div className="text-center mb-2">
-        <h2 className="text-xl font-semibold">Seus Hábitos</h2>
-        <p className="text-sm text-text-secondary">
-          Acompanhe seu progresso diário
-        </p>
+      <div className="flex justify-between items-center mb-4">
+        <select 
+          value={selectedMonth}
+          onChange={handleMonthChange}
+          className="p-2 border border-gray-300 rounded-md"
+        >
+          {getMonthOptions().map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
       
       {/* Estatísticas */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="text-center">
-          <p className="text-2xl font-bold text-primary">{stats.completedDays}</p>
-          <p className="text-xs text-text-secondary">Dias ativos</p>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="text-center bg-white p-3 rounded-lg shadow-sm">
+          <p className="text-2xl font-bold text-blue-600">{stats.completedDays}</p>
+          <p className="text-xs text-gray-500">Dias ativos</p>
         </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-primary">{stats.percentage}%</p>
-          <p className="text-xs text-text-secondary">Consistência</p>
+        <div className="text-center bg-white p-3 rounded-lg shadow-sm">
+          <p className="text-2xl font-bold text-blue-600">{stats.percentage}%</p>
+          <p className="text-xs text-gray-500">Consistência</p>
         </div>
-        <div className="text-center">
-          <p className="text-2xl font-bold text-primary">
-            {stats.completedDays > 0 ? stats.completedDays : 0}
+        <div className="text-center bg-white p-3 rounded-lg shadow-sm">
+          <p className="text-2xl font-bold text-blue-600">
+            {stats.currentStreak}
           </p>
-          <p className="text-xs text-text-secondary">Sequência atual</p>
+          <p className="text-xs text-gray-500">Sequência atual</p>
+        </div>
+        <div className="text-center bg-white p-3 rounded-lg shadow-sm">
+          <p className="text-2xl font-bold text-blue-600">
+            {activeRemedies.length}
+          </p>
+          <p className="text-xs text-gray-500">Remédios ativos</p>
         </div>
       </div>
       
       {/* Gráfico estilo GitHub */}
       <div className="bg-white p-4 rounded-lg shadow-sm">
-        <h3 className="text-sm font-medium mb-4">Últimos 30 dias</h3>
+        <h3 className="text-sm font-medium mb-4">Calendário de Hábitos</h3>
         
         <div className="grid grid-cols-7 gap-1">
           {days.map((day, index) => {
-            const habit = getHabitForDate(day.date);
-            const completionLevel = habit?.completionLevel || 0;
+            const { completionLevel } = getCompletionData(day.date);
             const color = getCompletionLevelColor(completionLevel);
+            const isToday = day.date === dayjs().format('YYYY-MM-DD');
+            
+            // Determine if it's a weekend
+            const isWeekend = ['Sat', 'Sun'].includes(day.dayOfWeek);
             
             return (
               <div key={index} className="aspect-square">
                 <div
-                  className={`w-full h-full rounded-sm ${color} cursor-pointer`}
+                  className={`w-full h-full rounded-sm ${color} ${isToday ? 'ring-2 ring-blue-500' : ''} ${
+                    isWeekend ? 'opacity-80' : ''
+                  } cursor-pointer flex items-center justify-center relative`}
                   title={`${day.dayOfMonth} - ${day.dayOfWeek}: ${completionLevel > 0 ? `${completionLevel * 25}% completo` : 'Sem registro'}`}
-                />
+                >
+                  <span className="absolute text-xs text-gray-500">{day.dayOfMonth}</span>
+                </div>
               </div>
             );
           })}
         </div>
         
-        <div className="flex items-center justify-end mt-2 text-xs text-text-secondary">
+        <div className="flex items-center justify-end mt-2 text-xs text-gray-500">
           <span className="mr-1">Menos</span>
           <div className="flex space-x-1">
             {[0, 1, 2, 3, 4].map((level) => (
@@ -125,18 +279,18 @@ export const HabitVisualization: React.FC<HabitVisualizationProps> = ({
         </div>
       </div>
       
-      {/* Lista de remédios selecionados */}
+      {/* Lista de remédios ativos */}
       <div className="mt-6">
-        <h3 className="text-sm font-medium mb-3">Seus remédios</h3>
+        <h3 className="text-sm font-medium mb-3">Remédios Naturais Ativos</h3>
         
-        <div className="space-y-2">
-          {selectedRemedies.map((remedy) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          {activeRemedies.map((remedy) => (
             <div
               key={remedy}
-              className="flex items-center p-2 bg-white rounded-lg shadow-sm"
+              className="flex items-center p-3 bg-white rounded-lg shadow-sm"
             >
-              <span className="text-lg mr-2">{getRemedyIcon(remedy)}</span>
-              <span>{getRemedyName(remedy)}</span>
+              <span className="text-lg mr-2">{REMEDY_INFO[remedy].icon}</span>
+              <span className="text-sm">{REMEDY_INFO[remedy].name}</span>
             </div>
           ))}
         </div>

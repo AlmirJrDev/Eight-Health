@@ -7,6 +7,8 @@ import Onboarding from './pages/Onboarding';
 import Welcome from './pages/Welcome';
 import Dashboard from './pages/Dashboard';
 import WaterPage from './pages/WaterPage';
+
+import RoutinesPage from './pages/RoutinePage';
 import HabitsPage from './pages/HabitsPage';
 
 const App: React.FC = () => {
@@ -34,6 +36,10 @@ const App: React.FC = () => {
             <Route 
               path="/habits" 
               element={isOnboardingComplete ? <HabitsPage /> : <Navigate to="/welcome" />} 
+            />
+               <Route 
+              path="/rotine" 
+              element={isOnboardingComplete ? <RoutinesPage /> : <Navigate to="/welcome" />} 
             />
             
             {/* Redirect root to welcome or dashboard based on onboarding status */}
