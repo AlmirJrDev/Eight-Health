@@ -1,8 +1,32 @@
 # 🌿 EightHealth — Aplicativo de Saúde Integral
 
-Um aplicativo voltado para quem busca saúde de forma **natural, organizada e consciente**.
+Um aplicativo voltado para quem busca saúde de forma **natural, organizada e consciente**, promovendo o equilíbrio entre os **três pilares da saúde verdadeira**: físico, mental e espiritual.
 
 ---
+
+## 🚀 Tecnologias Utilizadas
+
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (ou Create React App, se for o caso)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+## ⚙️ Requisitos para rodar o projeto localmente
+
+- Node.js (versão 16 ou superior)
+- NPM (ou Yarn, se preferir)
+
+---
+
+## 🧑‍💻 Como executar o projeto
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/UNASP-TECH/hackathon-2025-AlmirJrDev.git
+
 
 ## ✨ Propósito
 
