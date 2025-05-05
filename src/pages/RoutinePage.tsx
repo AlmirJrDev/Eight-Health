@@ -347,7 +347,7 @@ const RoutinesPage = () => {
           <div className="mt-6">
             <Button
               onClick={() => setIsAdding(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="  px-3 py-2 rounded-md text-sm font-medium bg-blue-50 text-blue-600"
             >
               Adicionar Primeira Atividade
             </Button>
