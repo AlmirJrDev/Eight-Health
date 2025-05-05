@@ -4,6 +4,9 @@ Um aplicativo voltado para quem busca saúde de forma **natural, organizada e co
 
 ---
 
+[![Veja o Elevator Pitch](https://www.youtube.com/shorts/5utuhn1QrYI)
+
+
 ## 🚀 Tecnologias Utilizadas
 
 - [React](https://reactjs.org/)
