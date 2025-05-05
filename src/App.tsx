@@ -10,6 +10,7 @@ import WaterPage from './pages/WaterPage';
 
 import RoutinesPage from './pages/RoutinePage';
 import HabitsPage from './pages/HabitsPage';
+import Footer from './assets/components/layout/Footer';
 
 const App: React.FC = () => {
   const { userData } = useUserStore();
@@ -17,9 +18,9 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className=" bg-gray-50 ">
         <Header />
-        <main>
+        <main className=''>
           <Routes>
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/onboarding" element={<Onboarding />} />
@@ -55,6 +56,7 @@ const App: React.FC = () => {
             />
           </Routes>
         </main>
+        <Footer/>
       </div>
     </Router>
   );

@@ -6,7 +6,7 @@ import { Button } from '../assets/components/common/Button';
 import { Input } from '../assets/components/common/Input';
 import { Checkbox } from '../assets/components/common/Checkbox';
 
-import Footer from '../assets/components/layout/Footer';
+
 import { NaturalRemedy } from '../types';
 import { HabitCalendar } from '../assets/components/HabitCalendar/HabitVisualisation';
 
@@ -73,8 +73,8 @@ const HabitsPage = () => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-green-50">
-      <main className="flex-grow container mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col ">
+      <main className="flex-grow container  px-4 py-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -225,7 +225,7 @@ const HabitsPage = () => {
         )}
       </main>
       
-      <Footer />
+  
     </div>
   );
 };

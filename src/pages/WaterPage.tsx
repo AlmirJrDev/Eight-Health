@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, PlusCircle, MinusCircle, Droplet } from 'lucide-react';
 import { WaterProgress } from '../assets/components/WaterTracker/WaterProgress';
-import Footer from '../assets/components/layout/Footer';
+
 import useWaterStore from '../store/waterStore';
 import useUserStore from '../store/userStore';
 
@@ -131,7 +131,7 @@ const WaterPage = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-blue-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col ">
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <motion.div 
@@ -306,7 +306,7 @@ const WaterPage = () => {
         </motion.div>
       </main>
       
-      <Footer />
+
     </div>
   );
 };
