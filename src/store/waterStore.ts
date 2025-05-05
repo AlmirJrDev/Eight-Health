@@ -1,70 +1,139 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { WaterStore } from '../types';
-import dayjs from 'dayjs';
 
-const DEFAULT_DAILY_GOAL = 2000; 
+interface WaterHistoryItem {
+  date: string;
+  amount: number;
+}
+
+interface WaterData {
+  currentAmount: number;
+  dailyGoal: number;
+  lastUpdated: string;
+  history: WaterHistoryItem[];
+}
+
+interface WaterStore {
+  waterData: WaterData;
+  addWater: (amount: number) => void;
+  setWaterGoal: (goal: number) => void;
+  resetDailyWater: () => void;
+}
+
+// Helper to get current date as YYYY-MM-DD
+const getTodayDate = () => {
+  const date = new Date();
+  return date.toISOString().split('T')[0];
+};
 
 const useWaterStore = create<WaterStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       waterData: {
-        dailyGoal: DEFAULT_DAILY_GOAL,
         currentAmount: 0,
-        history: []
+        dailyGoal: 2000, // Default goal: 2 liters
+        lastUpdated: getTodayDate(),
+        history: [],
       },
-
-      addWater: (amount: number) => 
-        set((state) => {
-          const today = dayjs().format('YYYY-MM-DD');
-          const existingEntryIndex = state.waterData.history.findIndex(
-            entry => entry.date === today
-          );
-
-          let newHistory = [...state.waterData.history];
-          
-          if (existingEntryIndex >= 0) {
       
-            newHistory[existingEntryIndex] = {
-              ...newHistory[existingEntryIndex],
-              amount: newHistory[existingEntryIndex].amount + amount
-            };
+      addWater: (amount: number) => {
+        const { waterData } = get();
+        const today = getTodayDate();
+        
+        // Check if it's a new day to reset
+        if (waterData.lastUpdated !== today) {
+          // Add yesterday to history if there was consumption
+          if (waterData.currentAmount > 0) {
+            set((state) => ({
+              waterData: {
+                ...state.waterData,
+                history: [
+                  ...state.waterData.history,
+                  { date: state.waterData.lastUpdated, amount: state.waterData.currentAmount }
+                ].slice(-30), // Keep only last 30 days
+                currentAmount: amount,
+                lastUpdated: today,
+              }
+            }));
           } else {
-
-            newHistory.push({
-              date: today,
-              amount: amount
-            });
+            // Just update the date and set current amount
+            set((state) => ({
+              waterData: {
+                ...state.waterData,
+                currentAmount: amount,
+                lastUpdated: today,
+              }
+            }));
           }
-
-          return {
+        } else {
+          // Same day, just add water
+          set((state) => ({
             waterData: {
               ...state.waterData,
               currentAmount: state.waterData.currentAmount + amount,
-              history: newHistory
             }
-          };
-        }),
-
-      setDailyGoal: (goal: number) => 
+          }));
+          
+          // Update today in history (if exists)
+          const historyIndex = waterData.history.findIndex(
+            (item) => item.date === today
+          );
+          
+          if (historyIndex >= 0) {
+            const updatedHistory = [...waterData.history];
+            updatedHistory[historyIndex] = {
+              ...updatedHistory[historyIndex],
+              amount: waterData.currentAmount + amount,
+            };
+            
+            set((state) => ({
+              waterData: {
+                ...state.waterData,
+                history: updatedHistory,
+              }
+            }));
+          }
+        }
+      },
+      
+      setWaterGoal: (goal: number) => {
         set((state) => ({
           waterData: {
             ...state.waterData,
-            dailyGoal: goal
+            dailyGoal: goal,
           }
-        })),
-
-      reset: () => 
-        set(() => ({
-          waterData: {
-            dailyGoal: DEFAULT_DAILY_GOAL,
-            currentAmount: 0,
-            history: []
-          }
-        })),
+        }));
+      },
+      
+      resetDailyWater: () => {
+        const { waterData } = get();
+        const today = getTodayDate();
+        
+        // Only add to history if there was consumption
+        if (waterData.currentAmount > 0) {
+          set((state) => ({
+            waterData: {
+              ...state.waterData,
+              history: [
+                ...state.waterData.history,
+                { date: state.waterData.lastUpdated, amount: state.waterData.currentAmount }
+              ].slice(-30), // Keep last 30 days
+              currentAmount: 0,
+              lastUpdated: today,
+            }
+          }));
+        } else {
+          set((state) => ({
+            waterData: {
+              ...state.waterData,
+              lastUpdated: today,
+            }
+          }));
+        }
+      },
     }),
     {
-      name: 'eight-health-water-storage',
+      name: 'water-storage', // Storage key for localStorage
     }
   )
 );

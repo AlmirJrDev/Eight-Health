@@ -1,4 +1,3 @@
-
 import { NaturalRemedy, RoutineActivity } from '../types';
 
 export const generateDefaultRoutine = (selectedRemedies: NaturalRemedy[]): RoutineActivity[] => {
@@ -7,187 +6,193 @@ export const generateDefaultRoutine = (selectedRemedies: NaturalRemedy[]): Routi
   if (selectedRemedies.includes('water')) {
     routine.push({
       id: '',
-      time: '06:30',
       name: 'Beber 300ml de água ao acordar',
-      remedyType: 'water',
-      completed: false,
-      description: 'Hidratar o corpo logo pela manhã'
+      startTime: '06:30',
+      endTime: '06:35',
+      category: 'water',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '10:00',
       name: 'Beber 300ml de água',
-      remedyType: 'water',
-      completed: false
+      startTime: '10:00',
+      endTime: '10:05',
+      category: 'water',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '13:00',
       name: 'Beber 300ml de água durante o almoço',
-      remedyType: 'water',
-      completed: false
+      startTime: '13:00',
+      endTime: '13:30',
+      category: 'water',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '16:00',
       name: 'Beber 300ml de água',
-      remedyType: 'water',
-      completed: false
+      startTime: '16:00',
+      endTime: '16:05',
+      category: 'water',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '19:00',
       name: 'Beber 300ml de água durante o jantar',
-      remedyType: 'water',
-      completed: false
+      startTime: '19:00',
+      endTime: '19:30',
+      category: 'water',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('exercise')) {
     routine.push({
       id: '',
-      time: '07:00',
       name: 'Exercício matinal (30 min)',
-      remedyType: 'exercise',
-      completed: false,
-      description: 'Caminhada, alongamento ou exercícios leves'
+      startTime: '07:00',
+      endTime: '07:30',
+      category: 'exercise',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '17:00',
       name: 'Exercício da tarde (30 min)',
-      remedyType: 'exercise',
-      completed: false,
-      description: 'Atividade física mais intensa'
+      startTime: '17:00',
+      endTime: '17:30',
+      category: 'exercise',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
     });
   }
 
   if (selectedRemedies.includes('rest')) {
     routine.push({
       id: '',
-      time: '22:00',
       name: 'Preparação para dormir',
-      remedyType: 'rest',
-      completed: false,
-      description: 'Desligar eletrônicos e preparar para um sono reparador'
+      startTime: '22:00',
+      endTime: '22:30',
+      category: 'rest',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '22:30',
       name: 'Hora de dormir',
-      remedyType: 'rest',
-      completed: false,
-      description: 'Dormir para garantir 7-8 horas de sono'
+      startTime: '22:30',
+      endTime: '06:30',
+      category: 'rest',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('sunlight')) {
     routine.push({
       id: '',
-      time: '08:00',
       name: 'Exposição matinal ao sol (15 min)',
-      remedyType: 'sunlight',
-      completed: false,
-      description: 'Obter vitamina D e regular o ritmo circadiano'
+      startTime: '08:00',
+      endTime: '08:15',
+      category: 'sunlight',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('temperance')) {
     routine.push({
       id: '',
-      time: '14:00',
       name: 'Pausa para relaxamento (10 min)',
-      remedyType: 'temperance',
-      completed: false,
-      description: 'Pausa para regulação emocional e equilíbrio'
+      startTime: '14:00',
+      endTime: '14:10',
+      category: 'temperance',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
     });
     
     routine.push({
       id: '',
-      time: '20:00',
       name: 'Evitar alimentos pesados/estimulantes',
-      remedyType: 'temperance',
-      completed: false
+      startTime: '20:00',
+      endTime: '20:30',
+      category: 'temperance',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('air')) {
     routine.push({
       id: '',
-      time: '07:30',
       name: 'Respiração profunda ao ar livre (5 min)',
-      remedyType: 'air',
-      completed: false
+      startTime: '07:30',
+      endTime: '07:35',
+      category: 'air',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '18:00',
       name: 'Respiração profunda ao ar livre (5 min)',
-      remedyType: 'air',
-      completed: false
+      startTime: '18:00',
+      endTime: '18:05',
+      category: 'air',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('nutrition')) {
     routine.push({
       id: '',
-      time: '07:45',
       name: 'Café da manhã nutritivo',
-      remedyType: 'nutrition',
-      completed: false,
-      description: 'Frutas, cereais integrais, proteínas magras'
+      startTime: '07:45',
+      endTime: '08:15',
+      category: 'nutrition',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '12:30',
       name: 'Almoço equilibrado',
-      remedyType: 'nutrition',
-      completed: false,
-      description: 'Metade do prato com vegetais, um quarto com proteínas, um quarto com carboidratos'
+      startTime: '12:30',
+      endTime: '13:00',
+      category: 'nutrition',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '19:30',
       name: 'Jantar leve',
-      remedyType: 'nutrition',
-      completed: false,
-      description: 'Refeição leve e nutritiva, pelo menos 2h antes de dormir'
+      startTime: '19:30',
+      endTime: '20:00',
+      category: 'nutrition',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
   if (selectedRemedies.includes('trust')) {
     routine.push({
       id: '',
-      time: '06:30',
       name: 'Momento de gratidão matinal',
-      remedyType: 'trust',
-      completed: false,
-      description: 'Reflexão sobre aspectos positivos da vida'
+      startTime: '06:30',
+      endTime: '06:40',
+      category: 'trust',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
     
     routine.push({
       id: '',
-      time: '21:30',
       name: 'Reflexão/meditação/oração',
-      remedyType: 'trust',
-      completed: false,
-      description: 'Momento espiritual para paz interior'
+      startTime: '21:30',
+      endTime: '21:45',
+      category: 'trust',
+      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
     });
   }
 
-
   return routine.sort((a, b) => {
-    if (a.time < b.time) return -1;
-    if (a.time > b.time) return 1;
+    if (a.startTime < b.startTime) return -1;
+    if (a.startTime > b.startTime) return 1;
     return 0;
   });
 };
@@ -212,7 +217,6 @@ export const formatTime = (time: string): string => {
   const [hours, minutes] = time.split(':');
   return `${hours}h${minutes}`;
 };
-
 
 export const getRemedyIcon = (remedy: NaturalRemedy): string => {
   const icons: Record<NaturalRemedy, string> = {
