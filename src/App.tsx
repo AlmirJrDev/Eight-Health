@@ -94,10 +94,7 @@ const App: React.FC = () => {
           </main>
           <Footer />
           
-          {/* Hidden Easter egg hint */}
-          <div className="text-xs text-gray-300 text-center absolute bottom-2 left-0 right-0 opacity-40">
-            ↑↑↓↓←→←→BA
-          </div>
+       
         </div>
       </DemoModeProvider>
     </Router>
