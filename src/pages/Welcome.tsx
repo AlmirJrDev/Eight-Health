@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
 import { motion } from 'framer-motion';
 import { Button } from '../assets/components/common/Button';
+import { GlassWater, Leaf } from 'lucide-react';
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -21,17 +22,16 @@ const Welcome = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col justify-center">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col justify-center max-md:my-12 ">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 sm:my-2  lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img 
-            src="/assets/logo.svg" 
-            alt="Eight Health Logo" 
-            className="h-20 w-20 mx-auto mb-6"
+          <Leaf
+           
+            className="h-20 w-20 mx-auto mb-6 text-blue-600"
           />
           
           <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl mb-4">
@@ -39,8 +39,9 @@ const Welcome = () => {
           </h1>
           
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Cuide da sua saúde de forma simples e eficiente. 
-            Mantenha-se hidratado, controle sua medicação e acompanhe seus hábitos saudáveis.
+          Descubra o poder dos 8 remédios naturais aliados ao cuidado com sua mente.
+          Nosso app ajuda você a organizar sua vida, cultivar hábitos saudáveis e alcançar equilíbrio físico, mental e espiritual. 
+          Porque uma mente clara é o primeiro passo para uma vida plena.
           </p>
         </motion.div>
 
@@ -53,9 +54,7 @@ const Welcome = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.03 15.12a2 2 0 00-1.022.547" />
-                </svg>
+             <GlassWater className='text-blue-600'/>
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">Acompanhamento de Água</h3>
               <p className="text-gray-600">
@@ -91,8 +90,8 @@ const Welcome = () => {
           <div className="mt-8">
             <Button 
               onClick={handleGetStarted}
-              variant="primary"
-              className="px-8"
+              variant="text"
+              className="px-8 h-12 font-medium bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto"
             >
               Começar Agora
             </Button>
