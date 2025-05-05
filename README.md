@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+# 🌿 EightHealth — Aplicativo de Saúde Integral
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um aplicativo voltado para quem busca saúde de forma **natural, organizada e consciente**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Propósito
 
-## Expanding the ESLint configuration
+Cuidar do corpo é essencial. Mas uma **vida plena** vai além da aparência física.  
+Este app foi criado para promover o equilíbrio entre os **três pilares da saúde verdadeira**:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🧠 **Mental** — com ferramentas de organização pessoal e clareza de hábitos
+- 🌱 **Físico** — com registro e estímulo de práticas saudáveis
+- 🙏 **Espiritual** — com espaço para o desenvolvimento da fé e conexão interior
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌱 Os 8 Remédios Naturais
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Baseado em princípios consagrados da saúde preventiva, o app acompanha e estimula o uso diário dos seguintes hábitos:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. 💧 Água  
+2. 🌬️ Ar Puro  
+3. 😴 Descanso  
+4. 🧘 Temperança  
+5. ☀️ Luz Solar  
+6. 🏃 Exercício Físico  
+7. 🥗 Alimentação Saudável  
+8. 🙏 Fé em Deus
+
+---
+
+## 🧩 Funcionalidades
+
+- 📝 **Formulário inicial** para análise de perfil (altura, peso, rotina)
+- 📊 **Cálculo de IMC**
+- 💦 **Recomendação automática de consumo ideal de água**
+- ✅ **Registro diário** de hábitos e metas pessoais
+- 🗓️ **Organizador semanal** para construção de uma rotina saudável e realista
+- 🔔 **Alertas e lembretes personalizados**
+- 📖 **Espaço para anotações espirituais e reflexões diárias**
+
+---
+
+## 💡 Diferenciais
+
+- Interface simples e intuitiva
+- Foco em saúde integral (corpo + mente + espírito)
+- Abordagem natural, sem dependência de medicamentos
+- Ideal para quem busca autoconhecimento, disciplina e leveza na rotina
+
+---
+
+
+> Focado em transformar rotinas em qualidade de vida.
+
