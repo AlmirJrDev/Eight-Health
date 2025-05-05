@@ -21,7 +21,7 @@ export const DemoModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   
   // Check if the current user is the demo user
   useEffect(() => {
-    if (userData?.name === "Demonstração") {
+    if (userData?.name === "Unasp") {
       setIsDemoMode(true);
     } else {
       setIsDemoMode(false);

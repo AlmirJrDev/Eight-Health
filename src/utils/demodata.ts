@@ -39,7 +39,7 @@ const generateWaterHistory = (days: number) => {
 
 // Sample demo user data
 const demoUserData: UserData = {
-  name: "Demonstração",
+  name: "Unasp",
   age: "35",
   height: 175,
   weight: 70,
