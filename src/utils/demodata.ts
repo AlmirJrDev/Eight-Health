@@ -90,7 +90,7 @@ const demoRoutines: Omit<RoutineActivity, "id">[] = [
     days: ["monday", "wednesday", "friday", "sunday"]
   },
   {
-    name: "Yoga",
+    name: "Academia",
     startTime: "18:00",
     endTime: "18:30",
     category: "exercise",
