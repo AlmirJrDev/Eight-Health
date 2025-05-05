@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Input } from '../common/Input';
 import { Button } from '../common/Button';
+import { ArrowLeft } from 'lucide-react';
+
 
 interface Step2AgeProps {
   age: string;
@@ -17,6 +19,7 @@ export const Step2Age: React.FC<Step2AgeProps> = ({
   onBack 
 }) => {
   const [error, setError] = useState<string>('');
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +53,7 @@ export const Step2Age: React.FC<Step2AgeProps> = ({
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-semibold mb-2">Olá!</h2>
+          <h2 className="text-2xl font-semibold mb-2">Boas vindas!</h2>
           <p className="text-text-secondary">Qual sua idade?</p>
         </div>
         
@@ -65,16 +68,17 @@ export const Step2Age: React.FC<Step2AgeProps> = ({
           required
         />
         
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 gap-2">
           {onBack && (
-            <Button variant="outline" onClick={onBack} type="button">
-              Voltar
+            <Button variant="outline" onClick={onBack} type="button"  className="px-8 gap-2  font-medium text-red-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
+             <ArrowLeft className='w-4'/> Voltar
             </Button>
           )}
           <Button 
             type="submit" 
             fullWidth 
             disabled={!isValidAge()}
+           className="px-8 h-12 font-medium bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto"
           >
             Próximo
           </Button>

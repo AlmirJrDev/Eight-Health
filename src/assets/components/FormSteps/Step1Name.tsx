@@ -39,7 +39,8 @@ export const Step1Name: React.FC<Step1NameProps> = ({ name, setName, onNext }) =
           required
         />
         
-        <Button type="submit" fullWidth disabled={!name.trim()}>
+        <Button type="submit" fullWidth disabled={!name.trim()}  className="px-8 h-12 font-medium bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto"
+            >
           Próximo
         </Button>
       </form>

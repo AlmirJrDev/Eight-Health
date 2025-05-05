@@ -10,17 +10,19 @@ export type NaturalRemedy =
   | 'trust';
 
 
-export interface UserData {
-  name: string;
-  age: string; 
-  selectedRemedies: NaturalRemedy[];
-  remedies: any[]; 
-  waterGoal: number; 
-  wakeUpTime: string;
-  sleepTime: string;
-  routines: any[]; 
-  onboardingCompleted: boolean;
-}
+  export interface UserData {
+    name: string;
+    age: string;
+    height: number; // em cm
+    weight: number; // em kg
+    selectedRemedies: string[];
+    remedies: any[];
+    waterGoal: number;
+    wakeUpTime: string;
+    sleepTime: string;
+    routines: any[];
+    onboardingCompleted: boolean;
+  }
 
 
 export interface RoutineActivity {

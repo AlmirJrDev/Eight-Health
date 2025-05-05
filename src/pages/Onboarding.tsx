@@ -10,7 +10,7 @@ import { Step2Age } from '../assets/components/FormSteps/Step2Age';
 import { Step3Remedies } from '../assets/components/FormSteps/Step3Remedies';
 import { Step4Routine } from '../assets/components/FormSteps/Step4Routine';
 import { ProgressIndicator } from '../assets/components/common/Checkbox';
-import { Leaf } from 'lucide-react';
+import { ArrowLeft, Leaf } from 'lucide-react';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -19,6 +19,8 @@ const Onboarding = () => {
   const [formData, setFormData] = useState<Omit<UserData, 'onboardingCompleted'>>({
     name: '',
     age: '',
+    height: 170, // valor padrão
+    weight: 70, // valor padrão
     selectedRemedies: [], 
     remedies: [],
     waterGoal: 2000, 
@@ -37,6 +39,10 @@ const Onboarding = () => {
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     } else {
+      // Calcular recomendação de água baseada no peso se não foi modificada pelo usuário
+      if (formData.waterGoal === 2000 && formData.weight > 0) {
+        formData.waterGoal = Math.round(formData.weight * 30);
+      }
    
       setUserData({
         ...formData,
@@ -79,7 +85,7 @@ const Onboarding = () => {
     });
   };
 
-  const stepLabels = ['Seu Nome', 'Sua Idade', 'Medicamentos', 'Rotina'];
+  const stepLabels = ['Seu Nome', 'Sua Idade', 'Objetivo', 'Rotina'];
   const canProceed = () => {
     switch (currentStep) {
       case 1:
@@ -87,10 +93,9 @@ const Onboarding = () => {
       case 2:
         return formData.age && !isNaN(Number(formData.age)) && Number(formData.age) > 0;
       case 3:
- 
         return true; 
       case 4:
-        return true; 
+        return formData.height > 0 && formData.weight > 0; // Verificar se altura e peso foram informados
       default:
         return false;
     }
@@ -130,22 +135,23 @@ const Onboarding = () => {
               onRemediesChange={(value) => handleUpdateFormData('remedies', value)}
             />
             {/* Navigation buttons for Step3 */}
-            <div className="flex justify-between mt-8">
-              <Button 
-                onClick={handleBack} 
-                variant="outline"
-              >
-                Voltar
-              </Button>
-              <div className="flex space-x-3">
+            <div className="flex items-center justify-between mt-8">
+     
+              <div className="flex space-x-3 gap-2">
+
+              <Button variant="outline" onClick={handleBack} type="button" className="px-8 gap-2  font-medium text-red-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
+             <ArrowLeft className='w-4'/> Voltar
+            </Button>
                 <Button 
                   onClick={handleSkip} 
                   variant="text"
+                  className="px-8  font-medium  text-blue-600 rounded-lg flex items-center justify-center mb-4 mx-auto"
                 >
                   Pular
                 </Button>
                 <Button 
                   onClick={handleNext} 
+                  className="px-8 w-full h-12 font-medium bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto"
                   variant="primary"
                 >
                   Próximo
@@ -160,9 +166,13 @@ const Onboarding = () => {
             waterGoal={formData.waterGoal}
             wakeUpTime={formData.wakeUpTime}
             sleepTime={formData.sleepTime}
+            height={formData.height}
+            weight={formData.weight}
             onWaterGoalChange={(value) => handleUpdateFormData('waterGoal', value)}
             onWakeUpTimeChange={(value) => handleUpdateFormData('wakeUpTime', value)}
             onSleepTimeChange={(value) => handleUpdateFormData('sleepTime', value)}
+            onHeightChange={(value) => handleUpdateFormData('height', value)}
+            onWeightChange={(value) => handleUpdateFormData('weight', value)}
           />
         );
       default:
@@ -175,7 +185,6 @@ const Onboarding = () => {
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 max-w-xl mx-auto">
         <div className="mb-8">
         <Leaf
-           
            className="h-10 w-10 mx-auto mb-6 text-blue-600"
          />
          
