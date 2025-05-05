@@ -18,6 +18,7 @@ interface WaterStore {
   addWater: (amount: number) => void;
   setWaterGoal: (goal: number) => void;
   resetDailyWater: () => void;
+  reset: () => void; // Added reset method
 }
 
 // Helper to get current date as YYYY-MM-DD
@@ -26,15 +27,18 @@ const getTodayDate = () => {
   return date.toISOString().split('T')[0];
 };
 
+// Default water data state
+const defaultWaterData = {
+  currentAmount: 0,
+  dailyGoal: 2000, // Default goal: 2 liters
+  lastUpdated: getTodayDate(),
+  history: [],
+};
+
 const useWaterStore = create<WaterStore>()(
   persist(
     (set, get) => ({
-      waterData: {
-        currentAmount: 0,
-        dailyGoal: 2000, // Default goal: 2 liters
-        lastUpdated: getTodayDate(),
-        history: [],
-      },
+      waterData: defaultWaterData,
       
       addWater: (amount: number) => {
         const { waterData } = get();
@@ -130,6 +134,11 @@ const useWaterStore = create<WaterStore>()(
             }
           }));
         }
+      },
+      
+      // Complete reset function for the store
+      reset: () => {
+        set({ waterData: defaultWaterData });
       },
     }),
     {

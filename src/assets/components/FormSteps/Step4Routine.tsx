@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import useWaterStore from '../../../store/waterStore';
+
 
 interface Step4RoutineProps {
   waterGoal: number;
@@ -28,6 +30,7 @@ export const Step4Routine: React.FC<Step4RoutineProps> = ({
   const [imc, setImc] = useState<number | null>(null);
   const [imcCategory, setImcCategory] = useState<string>('');
   const [recommendedWater, setRecommendedWater] = useState<number>(2000);
+  const { setWaterGoal } = useWaterStore();
 
   // Calcular o IMC e a categoria
   useEffect(() => {
@@ -58,14 +61,18 @@ export const Step4Routine: React.FC<Step4RoutineProps> = ({
       // Atualizar meta de água se o usuário não tiver definido manualmente
       if (waterGoal === 2000) {
         onWaterGoalChange(calculatedWater);
+        // Atualizar também no waterStore
+        setWaterGoal(calculatedWater);
       }
     }
-  }, [height, weight, waterGoal, onWaterGoalChange]);
+  }, [height, weight, waterGoal, onWaterGoalChange, setWaterGoal]);
 
   const handleWaterGoalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value)) {
       onWaterGoalChange(value);
+      // Atualizar também no waterStore
+      setWaterGoal(value);
     }
   };
 

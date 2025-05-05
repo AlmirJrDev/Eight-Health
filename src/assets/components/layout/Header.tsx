@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useUserStore from '../../../store/userStore';
 import { Leaf } from 'lucide-react';
+import DemoResetButton from '../common/demoReset';
+import { useDemoMode } from '../common/DemoModeProvider';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { userData } = useUserStore();
+  const { isDemoMode } = useDemoMode();
 
   const navigation = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -59,6 +62,8 @@ const Header = () => {
             ))}
 
             {/* User avatar or name */}
+
+            {isDemoMode && <DemoResetButton />}
             <div className="flex items-center">
               <div className="ml-3 relative">
                 <div className="flex items-center">

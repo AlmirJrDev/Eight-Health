@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../assets/components/common/Button';
 import { GlassWater, Leaf, Trash2 } from 'lucide-react';
 import useKonamiCode from '../utils/konami';
+import DemoButton from '../assets/components/common/demoButton';
 
 
 const Welcome = () => {
@@ -113,7 +114,7 @@ const Welcome = () => {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 flex">
             <Button 
               onClick={handleGetStarted}
               variant="text"
@@ -121,6 +122,8 @@ const Welcome = () => {
             >
               Começar Agora
             </Button>
+
+            <DemoButton />
           </div>
         </motion.div>
       </div>

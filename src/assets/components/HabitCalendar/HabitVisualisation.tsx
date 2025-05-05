@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br'; // Importando o locale pt-br
 import { NaturalRemedy } from '../../../types';
+
+// Configurando dayjs para usar o locale pt-br
+dayjs.locale('pt-br');
 
 // Typed remedy info
 interface RemedyInfo {
@@ -32,7 +36,8 @@ interface HabitCalendarProps {
 }
 
 interface DayInfo {
-  date: string;
+  date: string;         // Formato interno YYYY-MM-DD
+  displayDate: string;  // Formato visual DD/MM/YYYY
   dayOfWeek: string;
   dayOfMonth: number;
 }
@@ -60,7 +65,8 @@ export const HabitCalendar: React.FC<HabitCalendarProps> = ({
     for (let i = 1; i <= daysInMonth; i++) {
       const day = dayjs(`${selectedMonth}-${i.toString().padStart(2, '0')}`);
       days.push({
-        date: day.format('YYYY-MM-DD'),
+        date: day.format('YYYY-MM-DD'), // Mantemos o formato interno YYYY-MM-DD para processamento
+        displayDate: day.format('DD/MM/YYYY'), // Formato visual brasileiro
         dayOfWeek: day.format('ddd'),
         dayOfMonth: i,
       });
@@ -80,7 +86,7 @@ export const HabitCalendar: React.FC<HabitCalendarProps> = ({
       const date = today.subtract(i, 'month');
       options.push({
         value: date.format('YYYY-MM'),
-        label: date.format('MMMM YYYY')
+        label: date.format('MMMM [de] YYYY') // Formato "Maio de 2025"
       });
     }
     
@@ -197,6 +203,32 @@ export const HabitCalendar: React.FC<HabitCalendarProps> = ({
     setSelectedMonth(e.target.value);
   };
   
+  // Traduzir nomes de dias para exibição
+  const translateDayName = (day: string): string => {
+    // dayjs em pt-br já retorna os nomes em português, mas podemos garantir com este mapeamento
+    const translations: Record<string, string> = {
+      'Mon': 'Seg',
+      'Tue': 'Ter',
+      'Wed': 'Qua',
+      'Thu': 'Qui',
+      'Fri': 'Sex',
+      'Sat': 'Sáb',
+      'Sun': 'Dom'
+    };
+    
+    return translations[day] || day;
+  };
+  
+  // Verificar se é final de semana
+  const isWeekend = (day: string): boolean => {
+    return ['Sáb', 'Dom'].includes(translateDayName(day));
+  };
+  
+  // Formatar data para exibição nos tooltips
+  const formatDateForDisplay = (date: string): string => {
+    return dayjs(date).format('DD/MM/YYYY');
+  };
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-4">
@@ -246,17 +278,16 @@ export const HabitCalendar: React.FC<HabitCalendarProps> = ({
             const { completionLevel } = getCompletionData(day.date);
             const color = getCompletionLevelColor(completionLevel);
             const isToday = day.date === dayjs().format('YYYY-MM-DD');
-            
-            // Determine if it's a weekend
-            const isWeekend = ['Sat', 'Sun'].includes(day.dayOfWeek);
+            const dayIsWeekend = isWeekend(day.dayOfWeek);
+            const translatedDayOfWeek = translateDayName(day.dayOfWeek);
             
             return (
               <div key={index} className="aspect-square">
                 <div
                   className={`w-full h-full rounded-sm ${color} ${isToday ? 'ring-2 ring-blue-500' : ''} ${
-                    isWeekend ? 'opacity-80' : ''
+                    dayIsWeekend ? 'opacity-80' : ''
                   } cursor-pointer flex items-center justify-center relative`}
-                  title={`${day.dayOfMonth} - ${day.dayOfWeek}: ${completionLevel > 0 ? `${completionLevel * 25}% completo` : 'Sem registro'}`}
+                  title={`${day.dayOfMonth} - ${translatedDayOfWeek}: ${completionLevel > 0 ? `${completionLevel * 25}% completo` : 'Sem registro'} (${formatDateForDisplay(day.date)})`}
                 >
                   <span className="absolute text-xs text-gray-500">{day.dayOfMonth}</span>
                 </div>
